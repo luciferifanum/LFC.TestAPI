@@ -97,7 +97,7 @@ pipeline{
                 }
             }
         }
-        state('Pepe') {
+        stage('Pepe') {
             steps{
                 git branch: 'main', credentialsId: 'Github', url: GIT_CD_REPO
                 sh 'git push origin main'
