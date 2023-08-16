@@ -108,7 +108,7 @@ pipeline{
                         sh 'git commit -m "Updated the deployment.yaml | Jenkins Pipeline"'
                         sh 'git status'
                         sh 'git remote -v'
-                        sh 'git remote set-url origin git@github.com:luciferifanum/LFC.Deployments.git'
+                        //sh 'git remote set-url origin git@github.com:luciferifanum/LFC.Deployments.git'
                         sh 'git push origin HEAD:main'
                     }
                 }
