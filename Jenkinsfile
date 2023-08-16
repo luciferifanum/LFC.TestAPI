@@ -18,6 +18,7 @@ pipeline{
         DOCKER_PASS = "DOCKER"
         IMAGE_NAME = "${DOCKER_USER}" + "/" + "${APP_NAME}"
         IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
+        IMAGE_PATH = "${IMAGE_NAME}" + ":" + "${IMAGE_TAG}"
         SONAR_TOKEN = credentials("jenkins-sonarquebe-token")
         // JENKINS_API_TOKEN = credentials("JENKINS_API_TOKEN")
 
@@ -62,12 +63,20 @@ pipeline{
 
         stage("Push Docker Image") {
             steps {
-                echo IMAGE_TAG
+                echo {IMAGE_PATH}
                 script {
                     docker.withRegistry('',DOCKER_PASS) {
                         docker_image.push('latest')
                         docker_image.push("${IMAGE_TAG}")
                     }
+                }
+            }
+        }
+
+        stage("Trivy Scan") {
+            steps {
+                script {
+                  //sh ('docker run -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image dmancloud/complete-prodcution-e2e-pipeline:1.0.0-22 --no-progress --scanners vuln --exit-code 0 --severity HIGH,CRITICAL --format table')
                 }
             }
         }
@@ -80,7 +89,7 @@ pipeline{
                 }
             }
         }
-        
+
         // stage("Sonarqube Analysis") {
         //     steps {
         //         script {
@@ -98,17 +107,6 @@ pipeline{
         //     steps {
         //         script {
         //             waitForQualityGate abortPipeline: false, credentialsId: 'jenkins-sonarqube-token'
-        //         }
-        //     }
-
-        // }
-
-       
-
-        // stage("Trivy Scan") {
-        //     steps {
-        //         script {
-		//    sh ('docker run -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image dmancloud/complete-prodcution-e2e-pipeline:1.0.0-22 --no-progress --scanners vuln  --exit-code 0 --severity HIGH,CRITICAL --format table')
         //         }
         //     }
 
