@@ -90,20 +90,20 @@ pipeline{
             }
         }
 
-        stage("Create artifacts or make changes") {
+        stage("Update ArgoCD K8S Manifest & Push to Repo") {
             steps {
-                // sh 'cat lfc-training-testapi-api/deployment.yaml'
-                // sh 'sed -i "s|image: luciferifanum/lfc-training-testapi:[^ ]*|image: luciferifanum/lfc-training-testapi:${IMAGE_TAG}|g" lfc-training-testapi-api/deployment.yaml'
-                // sh 'cat lfc-training-testapi-api/deployment.yaml'
+
+                sh 'cat lfc-training-testapi-api/deployment.yaml'
+                sh 'sed -i "s|image: luciferifanum/lfc-training-testapi:[^ ]*|image: luciferifanum/lfc-training-testapi:${IMAGE_TAG}|g" lfc-training-testapi-api/deployment.yaml'
+                sh 'cat lfc-training-testapi-api/deployment.yaml'
+
                 sh 'git config user.email "dev@setenova.com"'
                 sh 'git config user.name "Setenova Dev Team"'
-                // sh 'git remote set-url origin git@github.com:luciferifanum/LFC.Deployments.git'
-                // sh 'git add lfc-training-testapi-api/deployment.yaml'
-                // sh 'git config user.email "dev@setenova.com"'
-                // sh 'git config user.name "Setenova Dev Team"'
-                sh "touch testfile"
-                sh "git add testfile"
-                sh "git commit -m 'Add testfile from Jenkins Pipeline'"
+
+                sh 'git add lfc-training-testapi-api/deployment.yaml'
+                //sh "touch testfile"
+                //sh "git add testfile"
+                sh "git commit -m 'Updated the deployment.yaml | Jenkins Pipeline'"
             }
         }
         stage("Push to Git Repository") {
