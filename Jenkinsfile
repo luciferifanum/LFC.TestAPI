@@ -52,14 +52,13 @@ pipeline{
         //     }
         // }
 
-        // stage("Build Docker Image") {
-        //     steps {
-        //         script {
-        //             dockerimage1 = docker.build("${IMAGE_NAME}", "-f ./src/LFC.Training.TestAPI/Deployment/Dockerfile .")
-        //             dockerimage = docker.build ("${IMAGE_NAME}")
-        //         }
-        //     }
-        // }
+        stage("Build Docker Image") {
+            steps {
+                script {
+                    dockerimage = docker.build ("${IMAGE_NAME}")
+                }
+            }
+        }
 
         // stage("Sonarqube Analysis") {
         //     steps {
