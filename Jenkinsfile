@@ -91,10 +91,21 @@ pipeline{
                     sh 'git config user.name "Setenova Dev Team"'
                     sh 'git add lfc-training-testapi-api/deployment.yaml'
                     sh 'git commit -m "Updated the deployment.yaml | Jenkins Pipeline"'
-                    sh 'git remote -v'
-                    sh 'git push --set-upstream origin main'
+                    // sh 'git remote -v'
+                    // sh 'git remote set-url origin git@github.com:prabinav/argocd-my-app.git'
+                    // sh 'git push --set-upstream origin main'
                 }
             }
+        }
+        state('Pepe') {
+            steps{
+                git branch: 'main', credentialsId: 'Github', url: GIT_CD_REPO
+                sh 'git push origin main'
+                // withCredentials([gitUsernamePassword(credentialsId: 'ssbostan-github-token']) {
+                //     sh "git push -u origin main"
+                // }
+            }
+             
         }
         // stage ('Updating the Deployment File') {
         //     steps {
