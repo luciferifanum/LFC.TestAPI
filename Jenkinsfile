@@ -14,7 +14,6 @@ pipeline{
         APP_NAME = "lfc-training-testapi"
         RELEASE = "1.0.0"
         DOCKER_USER = "luciferifanum"
-        //DOCKER_PASS = 'dckr_pat_J1DpG1h-qE7ks-liuzFqmBggYhE'
         DOCKER_PASS = "DOCKER"
         IMAGE_NAME = "${DOCKER_USER}" + "/" + "${APP_NAME}"
         IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
@@ -73,13 +72,13 @@ pipeline{
             }
         }
 
-        stage("Trivy Scan") {
-            steps {
-                script {
-                  //sh ('docker run -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image dmancloud/complete-prodcution-e2e-pipeline:1.0.0-22 --no-progress --scanners vuln --exit-code 0 --severity HIGH,CRITICAL --format table')
-                }
-            }
-        }
+        // stage("Trivy Scan") {
+        //     steps {
+        //         script {
+        //           //sh ('docker run -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image dmancloud/complete-prodcution-e2e-pipeline:1.0.0-22 --no-progress --scanners vuln --exit-code 0 --severity HIGH,CRITICAL --format table')
+        //         }
+        //     }
+        // }
 
         stage ('Cleanup Artifacts') {
             steps {
