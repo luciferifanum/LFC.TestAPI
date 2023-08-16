@@ -106,13 +106,11 @@ pipeline{
                         //sh 'git add lfc-training-testapi-api/deployment.yaml'
                         sh 'git add .'
                         sh 'git commit -m "Updated the deployment.yaml | Jenkins Pipeline"'
-                        //sh 'git push https://luciferifanum:Huelva2022!@github.com/luciferifanum/LFC.Deployments.git HEAD:main'
-                        // sh 'git status'
-                        // sh 'git remote -v'
+                        sh 'git status'
+                        sh 'git remote -v'
                         sh 'git remote set-url origin git@github.com:luciferifanum/LFC.Deployments.git'
                         sh 'git push origin HEAD:main'
-                        // sh 'ssh-agent bash -c "ssh-add ${SSH_KEY_FILE}; git push origin HEAD:main"'
-                        //sh 'git push @github.com/${GIT_USER_NAME}/${GIT_REPO_NAME">https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:main'
+                       
                     }
                 }
             }
