@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "xwBY5AVTmCuAcg21AuS2b6TyQv29IM3B1JEuLmz6syk=",
+  "Source": "LFC.TestAPI",
+  "BasePath": "_content/LFC.TestAPI",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
