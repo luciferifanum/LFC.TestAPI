@@ -110,7 +110,7 @@ pipeline{
                         sh 'git status'
                         sh 'git remote -v'
                         sh 'git push origin HEAD:main'
-                    // }
+                    }
                 }
             }
         }
