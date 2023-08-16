@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Du557TPQzneo8TGAb+00xm0n3Fq8dKonBs9ayfDUqAVh1ji7S459cgqpRmPfCfcIvdi14aoRXJ0lIEQRZnj6Bw==",
+  "dgSpecHash": "XXfRmXKEzE2p4NldJ0W8s79VPsI+z2bKzVIqgg/Q/lSJtZvhifkPCQ2lN/QVbAycNE5vlIzOADLXkuF9DpPDfw==",
   "success": true,
-  "projectFilePath": "c:\\Users\\lucif\\LFC.TestAPI\\LFC.TestAPI.csproj",
+  "projectFilePath": "c:\\Users\\lucif\\OneDrive\\Proyectos\\LFC.TestAPI\\LFC.TestAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\lucif\\.nuget\\packages\\microsoft.aspnetcore.openapi\\7.0.10\\microsoft.aspnetcore.openapi.7.0.10.nupkg.sha512",
     "C:\\Users\\lucif\\.nuget\\packages\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\lucif\\LFC.TestAPI\\LFC.TestAPI.csproj": {}
+    "c:\\Users\\lucif\\OneDrive\\Proyectos\\LFC.TestAPI\\LFC.TestAPI.csproj": {}
   },
   "projects": {
-    "c:\\Users\\lucif\\LFC.TestAPI\\LFC.TestAPI.csproj": {
+    "c:\\Users\\lucif\\OneDrive\\Proyectos\\LFC.TestAPI\\LFC.TestAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\lucif\\LFC.TestAPI\\LFC.TestAPI.csproj",
+        "projectUniqueName": "c:\\Users\\lucif\\OneDrive\\Proyectos\\LFC.TestAPI\\LFC.TestAPI.csproj",
         "projectName": "LFC.TestAPI",
-        "projectPath": "c:\\Users\\lucif\\LFC.TestAPI\\LFC.TestAPI.csproj",
+        "projectPath": "c:\\Users\\lucif\\OneDrive\\Proyectos\\LFC.TestAPI\\LFC.TestAPI.csproj",
         "packagesPath": "C:\\Users\\lucif\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\lucif\\LFC.TestAPI\\obj\\",
+        "outputPath": "c:\\Users\\lucif\\OneDrive\\Proyectos\\LFC.TestAPI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\lucif\\AppData\\Roaming\\NuGet\\NuGet.Config"
