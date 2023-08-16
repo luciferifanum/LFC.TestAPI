@@ -56,8 +56,7 @@ pipeline{
 
         stage("Push Docker Image") {
             steps {
-                echo IMAGE_PATH
-                script {
+                    script {
                     docker.withRegistry('',DOCKER_PASS) {
                         docker_image.push('latest')
                         docker_image.push("${IMAGE_TAG}")
@@ -80,7 +79,13 @@ pipeline{
                 git branch: 'main', credentialsId: 'Github', url: GIT_CD_REPO
             }
         }
-
+        stage('Update K8S Manifest & Push to Repo'){
+            steps {
+                script  {
+                    sh 'cat lfc-training-testapi-api/service.yaml'
+                }
+            }
+        }
         // stage ('Updating the Deployment File') {
         //     steps {
         //         withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]){
