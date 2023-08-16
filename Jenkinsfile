@@ -97,7 +97,7 @@ pipeline{
         stage('Update K8S Manifest & Push to Repo'){
             steps {
                 script  {
-                    withCredentials([gitUsernamePassword(credentialsId: 'Github', gitToolName: 'Default']) {
+                    withCredentials(credentialsId: 'Github') {
                         sh 'cat lfc-training-testapi-api/deployment.yaml'
                         sh 'sed -i "s|image: luciferifanum/lfc-training-testapi:[^ ]*|image: luciferifanum/lfc-training-testapi:${IMAGE_TAG}|g" lfc-training-testapi-api/deployment.yaml'
                         sh 'cat lfc-training-testapi-api/deployment.yaml'
