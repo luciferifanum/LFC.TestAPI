@@ -37,13 +37,13 @@ pipeline{
             }
         }
 
-        // stage('Build Application') {
-        //     steps {
-        //         sh 'dotnet restore src/LFC.Training.TestAPI/LFC.Training.TestAPI.csproj'
-        //         // sh 'dotnet tool restore --configfile "src/LFC.Training.TestAPI/.config/dotnet-tool.json"'
-        //         sh 'dotnet publish src/LFC.Training.TestAPI/LFC.Training.TestAPI.csproj -c Release -o out -r linux-x64 --self-contained'
-        //     }
-        // }
+        stage('Build Application') {
+            steps {
+                sh 'dotnet restore'
+                // sh 'dotnet tool restore --configfile "src/LFC.Training.TestAPI/.config/dotnet-tool.json"'
+                sh 'dotnet publish -c Release -o out -r linux-x64 --self-contained'
+            }
+        }
 
         // stage('Docker Build') {
         //     steps {
