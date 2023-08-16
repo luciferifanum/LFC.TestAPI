@@ -65,7 +65,6 @@ pipeline{
                 echo IMAGE_TAG
                 script {
                     docker.withRegistry('',DOCKER_PASS) {
-                    
                         docker_image.push('latest')
                         docker_image.push("${IMAGE_TAG}")
                     }
@@ -73,6 +72,15 @@ pipeline{
             }
         }
 
+        stage ('Cleanup Artifacts') {
+            steps {
+                script {
+                    sh "docker rmi ${IMAGE_NAME}:${IMAGE_TAG}"
+                    sh "docker rmi ${IMAGE_NAME}:latest"
+                }
+            }
+        }
+        
         // stage("Sonarqube Analysis") {
         //     steps {
         //         script {
@@ -97,22 +105,6 @@ pipeline{
 
        
 
-        // stage("Build & Push Docker Image") {
-        //     steps {
-        //         script {
-        //             docker.withRegistry('',DOCKER_PASS) {
-        //                 docker_image = docker.build "${IMAGE_NAME}"
-        //             }
-
-        //             docker.withRegistry('',DOCKER_PASS) {
-        //                 docker_image.push("${IMAGE_TAG}")
-        //                 docker_image.push('latest')
-        //             }
-        //         }
-        //     }
-
-        // }
-
         // stage("Trivy Scan") {
         //     steps {
         //         script {
@@ -121,16 +113,6 @@ pipeline{
         //     }
 
         // }
-
-        // stage ('Cleanup Artifacts') {
-        //     steps {
-        //         script {
-        //             sh "docker rmi ${IMAGE_NAME}:${IMAGE_TAG}"
-        //             sh "docker rmi ${IMAGE_NAME}:latest"
-        //         }
-        //     }
-        // }
-
 
         // stage("Trigger CD Pipeline") {
         //     steps {
