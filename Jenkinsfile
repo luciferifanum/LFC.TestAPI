@@ -10,10 +10,16 @@ pipeline{
         RELEASE = "1.0.0"
         DOCKER_USER = "luciferifanum"
         DOCKER_PASS = "DOCKER"
+
         IMAGE_NAME = "${DOCKER_USER}" + "/" + "${APP_NAME}"
         IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
         IMAGE_PATH = "${IMAGE_NAME}" + ":" + "${IMAGE_TAG}"
+
         SONAR_TOKEN = credentials("jenkins-sonarquebe-token")
+
+        GIT_CD_REPO = "https://github.com/luciferifanum/LFC.Deployments"
+        GIT_USER_NAME = "****************"
+
         // JENKINS_API_TOKEN = credentials("JENKINS_API_TOKEN")
 
     }
@@ -39,26 +45,6 @@ pipeline{
                 sh 'dotnet publish -c Release -o out -r linux-x64 --self-contained'
             }
         }
-
-        // stage("Sonarqube Analysis") {
-        //     steps {
-        //         script {
-        //             withSonarQubeEnv('sonarqube-server') {
-        //                 sh 'dotnet-sonarscanner begin /k:"Test" /d:sonar.host.url="http://10.10.10.7:9000" /d:sonar.login="${SONAR_TOKEN}"'
-        //                 sh 'dotnet build'
-        //                 sh 'dotnet-sonarscanner end'
-        //             }
-        //         }
-        //     }
-        // }
-
-        // stage("Quality Gate") {
-        //     steps {
-        //         script {
-        //             waitForQualityGate abortPipeline: false, credentialsId: 'jenkins-sonarqube-token'
-        //         }
-        //     }
-        // }
 
         stage("Build Docker Image") {
             steps {
@@ -91,23 +77,38 @@ pipeline{
 
          stage('Checkout ArgoCD K8S Manifest'){
             steps {
-                git branch: 'main', credentialsId: 'Github', url: 'https://github.com/luciferifanum/LFC.Deployments'
-                // git credentialsId: '53ad6e8d-f843-40d1-8fb6-52ebd9a7504b', 
-                // url: 'https://github.com/prabinav/argocd-my-app',
-                // branch: 'main'
+                git branch: 'main', credentialsId: 'Github', url: GIT_CD_REPO
             }
         }
+
+        // stage ('Updating the Deployment File') {
+        //     steps {
+        //         withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]){
+        //             sh '''
+                    
+        //                 git pull https://github.com/****************/CI-CD-PIPELINE.git
+        //                 git config  user.email "****************.com"
+        //                 git config  user.name "****************"
+        //                 BUILD_NUMBER=${BUILD_NUMBER}
+        //                 sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" ArgoCD/deployments.yml
+        //                 git add ArgoCD/deployments.yml
+        //                 git commit -m "updated the image ${BUILD_NUMBER}"
+        //                 git push @github.com/${GIT_USER_NAME}/${GIT_REPO_NAME">@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME">@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME">https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:main
+        //             '''
+        //         }
+        //     }
+        // }
 
         // stage('Update K8S Manifest & Push to Repo'){
         //     steps {
         //         script {
         //             withCredentials([sshUserPrivateKey(credentialsId: '07b60c02-3cf2-4632-a791-32c9eb56aa38', keyFileVariable: 'SSH_KEY_FILE', passphraseVariable: 'SSH_PASSPHRASE', usernameVariable: 'SSH_USERNAME')]) {
         //                 sh '''
-        //                 cat micro-app/microservice.yaml
+        //                 cat lfc-training-testapi-api/service.yaml
         //                 sed -i "s|image: docker.io/iamprabin/cicd:[^ ]*|image: docker.io/iamprabin/cicd:${BUILD_NUMBER}|g" micro-app/microservice.yaml
-        //                 cat micro-app/microservice.yaml
-        //                 git add micro-app/microservice.yaml
-        //                 git commit -m 'Updated the microservice.yaml | Jenkins Pipeline'
+        //                 cat lfc-training-testapi-api/service.yaml
+        //                 git add lfc-training-testapi-api/service.yaml
+        //                 git commit -m 'Updated the service.yaml | Jenkins Pipeline'
         //                 git remote -v
      
         //                 # Set the remote URL to use SSH
@@ -129,5 +130,25 @@ pipeline{
                 }
             }
         }
+
+        // stage("Sonarqube Analysis") {
+        //     steps {
+        //         script {
+        //             withSonarQubeEnv('sonarqube-server') {
+        //                 sh 'dotnet-sonarscanner begin /k:"Test" /d:sonar.host.url="http://10.10.10.7:9000" /d:sonar.login="${SONAR_TOKEN}"'
+        //                 sh 'dotnet build'
+        //                 sh 'dotnet-sonarscanner end'
+        //             }
+        //         }
+        //     }
+        // }
+
+        // stage("Quality Gate") {
+        //     steps {
+        //         script {
+        //             waitForQualityGate abortPipeline: false, credentialsId: 'jenkins-sonarqube-token'
+        //         }
+        //     }
+        // }
     }
 }
