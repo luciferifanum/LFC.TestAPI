@@ -82,7 +82,9 @@ pipeline{
         stage('Update K8S Manifest & Push to Repo'){
             steps {
                 script  {
-                    sh 'cat lfc-training-testapi-api/service.yaml'
+                    sh 'cat lfc-training-testapi-api/deployment.yaml'
+                    sh 'sed -i "s|image: luciferifanum/lfc-training-testapi:[^ ]*|image: luciferifanum/lfc-training-testapi:${IMAGE_TAG}|g" lfc-training-testapi-api/deployment.yaml'
+                    sh 'cat lfc-training-testapi-api/deployment.yaml'
                 }
             }
         }
