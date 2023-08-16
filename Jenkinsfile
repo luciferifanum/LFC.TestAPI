@@ -18,8 +18,8 @@ pipeline{
 
         SONAR_TOKEN = credentials("jenkins-sonarquebe-token")
 
-        GIT_CD_REPO = "https://github.com/luciferifanum/LFC.Deployments"
-        GIT_USER_NAME = "****************"
+        GIT_REPO_NAME = "https://github.com/luciferifanum/LFC.Deployments"
+        GIT_USER_NAME = "luciferifanum"
 
         // JENKINS_API_TOKEN = credentials("JENKINS_API_TOKEN")
 
@@ -77,24 +77,27 @@ pipeline{
 
         stage('Checkout ArgoCD K8S Manifest'){
             steps {
-                git branch: 'main', credentialsId: 'Github', url: GIT_CD_REPO
+                git branch: 'main', credentialsId: 'Github', url: GIT_REPO_NAME
             }
         }
 
         stage('Update K8S Manifest & Push to Repo'){
             steps {
                 script  {
-                    sh 'cat lfc-training-testapi-api/deployment.yaml'
-                    sh 'sed -i "s|image: luciferifanum/lfc-training-testapi:[^ ]*|image: luciferifanum/lfc-training-testapi:${IMAGE_TAG}|g" lfc-training-testapi-api/deployment.yaml'
-                    sh 'cat lfc-training-testapi-api/deployment.yaml'
-                    sh 'git config user.email "dev@setenova.com"'
-                    sh 'git config user.name "Setenova Dev Team"'
-                    sh 'git add lfc-training-testapi-api/deployment.yaml'
-                    sh 'git commit -m "Updated the deployment.yaml | Jenkins Pipeline"'
-                    sh 'git status'
-                    sh 'git remote -v'
-                    sh 'git remote set-url origin git@github.com:luciferifanum/LFC.Deployments.git'
-                    sh 'git push --set-upstream origin main'
+                    withCredentials(credentialsId: 'Github') {
+                        sh 'cat lfc-training-testapi-api/deployment.yaml'
+                        sh 'sed -i "s|image: luciferifanum/lfc-training-testapi:[^ ]*|image: luciferifanum/lfc-training-testapi:${IMAGE_TAG}|g" lfc-training-testapi-api/deployment.yaml'
+                        sh 'cat lfc-training-testapi-api/deployment.yaml'
+                        sh 'git config user.email "dev@setenova.com"'
+                        sh 'git config user.name "Setenova Dev Team"'
+                        sh 'git add lfc-training-testapi-api/deployment.yaml'
+                        sh 'git commit -m "Updated the deployment.yaml | Jenkins Pipeline"'
+                        sh 'git push @github.com/${GIT_USER_NAME}/${GIT_REPO_NAME">@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME">@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME">https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:main'
+                        // sh 'git status'
+                        // sh 'git remote -v'
+                        // sh 'git remote set-url origin git@github.com:luciferifanum/LFC.Deployments.git'
+                        // sh 'ssh-agent bash -c "ssh-add ${SSH_KEY_FILE}; git push origin HEAD:main"'
+                    }
                 }
             }
         }
