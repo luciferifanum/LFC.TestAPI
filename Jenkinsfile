@@ -92,11 +92,12 @@ pipeline{
                         sh 'git config user.name "Setenova Dev Team"'
                         sh 'git add lfc-training-testapi-api/deployment.yaml'
                         sh 'git commit -m "Updated the deployment.yaml | Jenkins Pipeline"'
-                        sh 'git push @github.com/${GIT_USER_NAME}/${GIT_REPO_NAME">@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME">@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME">https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:main'
-                        // sh 'git status'
-                        // sh 'git remote -v'
-                        // sh 'git remote set-url origin git@github.com:luciferifanum/LFC.Deployments.git'
+                       
+                        sh 'git status'
+                        sh 'git remote -v'
+                        sh 'git remote set-url origin git@github.com:luciferifanum/LFC.Deployments.git'
                         // sh 'ssh-agent bash -c "ssh-add ${SSH_KEY_FILE}; git push origin HEAD:main"'
+                        //sh 'git push @github.com/${GIT_USER_NAME}/${GIT_REPO_NAME">https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:main'
                     }
                 }
             }
