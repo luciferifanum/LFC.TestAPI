@@ -94,7 +94,7 @@ pipeline{
                     sh 'git status'
                     sh 'git remote -v'
                     sh 'git remote set-url origin git@github.com:luciferifanum/LFC.Deployments.git'
-                    //sh 'git push --set-upstream origin main'
+                    sh 'git push --set-upstream origin main'
                 }
             }
         }
