@@ -45,12 +45,17 @@ pipeline{
             }
         }
 
-        // stage('Docker Build') {
-        //     steps {
-        //         // echo ${IMAGE_NAME}
-        //         sh 'docker build -t ${IMAGE_NAME}:latest .'
-        //     }
-        // }
+        stage("Sonarqube Analysis") {
+            steps {
+                script {
+                    withSonarQubeEnv('sonarqube-server') {
+                        sh 'dotnet-sonarscanner begin /k:"Test" /d:sonar.host.url="http://10.10.10.7:9000" /d:sonar.login="${SONAR_TOKEN}"'
+                        sh 'dotnet build'
+                        sh 'dotnet-sonarscanner end'
+                    }
+                }
+            }
+        }
 
         stage("Build Docker Image") {
             steps {
@@ -75,7 +80,7 @@ pipeline{
         stage("Trivy Scan") {
             steps {
                 script {
-                    sh ('docker run -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image ${IMAGE_PATH} --no-progress --scanners vuln --exit-code 0 --severity HIGH,CRITICAL --format table')
+                    sh "docker run -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image ${IMAGE_PATH} --no-progress --scanners vuln --exit-code 0 --severity HIGH,CRITICAL --format table"
                 }
             }
         }
@@ -88,19 +93,6 @@ pipeline{
                 }
             }
         }
-
-        // stage("Sonarqube Analysis") {
-        //     steps {
-        //         script {
-        //             withSonarQubeEnv('sonarqube-server') {
-        //                 // sh 'dotnet tool install --global dotnet-sonarscanner'
-        //                 sh 'dotnet-sonarscanner begin /k:"Test" /d:sonar.host.url="http://10.10.10.7:9000" /d:sonar.login="${SONAR_TOKEN}"'
-        //                 sh 'dotnet build src/LFC.Training.TestAPI/LFC.Training.TestAPI.csproj'
-        //                 sh 'dotnet-sonarscanner end'
-        //             }
-        //         }
-        //     }
-        // }
 
         // stage("Quality Gate") {
         //     steps {
