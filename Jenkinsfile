@@ -92,6 +92,7 @@ pipeline{
                     sh 'git add lfc-training-testapi-api/deployment.yaml'
                     sh 'git commit -m "Updated the deployment.yaml | Jenkins Pipeline"'
                     sh 'git remote -v'
+                    sh 'git push'
                 }
             }
         }
