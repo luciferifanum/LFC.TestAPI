@@ -93,9 +93,14 @@ pipeline{
         stage("Create artifacts or make changes") {
             steps {
                 sh 'cat lfc-training-testapi-api/deployment.yaml'
-                // sh "touch testfile"
-                // sh "git add testfile"
-                // sh "git commit -m 'Add testfile from Jenkins Pipeline'"
+                sh 'sed -i "s|image: luciferifanum/lfc-training-testapi:[^ ]*|image: luciferifanum/lfc-training-testapi:${IMAGE_TAG}|g" lfc-training-testapi-api/deployment.yaml'
+                sh 'cat lfc-training-testapi-api/deployment.yaml'
+                sh 'git config user.email "dev@setenova.com"'
+                sh 'git config user.name "Setenova Dev Team"'
+                sh 'git remote set-url origin git@github.com:luciferifanum/LFC.Deployments.git'
+                sh 'git add lfc-training-testapi-api/deployment.yaml'
+                sh 'git config user.email "dev@setenova.com"'
+                sh 'git config user.name "Setenova Dev Team"'
             }
         }
         stage("Push to Git Repository") {
