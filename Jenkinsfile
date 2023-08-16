@@ -18,6 +18,7 @@ pipeline{
 
         SONAR_TOKEN = credentials("jenkins-sonarquebe-token")
 
+        GIT_AUTH = credentials('Github') 
         GIT_REPO_NAME = "https://github.com/luciferifanum/LFC.Deployments"
         GIT_USER_NAME = "luciferifanum"
 
@@ -29,6 +30,7 @@ pipeline{
         stage("Cleanup Workspace"){
             steps {
                 cleanWs()
+                echo ("${GIT_AUTH}")
             }
 
         }
@@ -57,7 +59,7 @@ pipeline{
 
         stage("Push Docker Image") {
             steps {
-                    script {
+                script {
                     docker.withRegistry('',DOCKER_PASS) {
                         docker_image.push('latest')
                         docker_image.push("${IMAGE_TAG}")
@@ -94,24 +96,31 @@ pipeline{
         //     }
         // }
 
-        stage('Update K8S Manifest & Push to Repo'){
+        // stage('Update K8S Manifest & Push to Repo'){
+        //     steps {
+        //         script  {
+        //             withCredentials(gitUsernamePassword(credentialsId: 'Github', gitToolName: 'Default')) {
+        //                 sh 'cat lfc-training-testapi-api/deployment.yaml'
+        //                 sh 'sed -i "s|image: luciferifanum/lfc-training-testapi:[^ ]*|image: luciferifanum/lfc-training-testapi:${IMAGE_TAG}|g" lfc-training-testapi-api/deployment.yaml'
+        //                 sh 'cat lfc-training-testapi-api/deployment.yaml'
+        //                 sh 'git config user.email "dev@setenova.com"'
+        //                 sh 'git config user.name "Setenova Dev Team"'
+        //                 sh 'git remote set-url origin git@github.com:luciferifanum/LFC.Deployments.git'
+        //                 sh 'git add lfc-training-testapi-api/deployment.yaml'
+        //                 //sh 'git add .'
+        //                 sh 'git commit -m "Updated the deployment.yaml | Jenkins Pipeline"'
+        //                 sh 'git status'
+        //                 sh 'git remote -v'
+        //                 sh 'git push origin HEAD:main'
+        //             }
+        //         }
+        //     }
+        // }
+
+        stage("Push") {
             steps {
-                script  {
-                    withCredentials(gitUsernamePassword(credentialsId: 'Github', gitToolName: 'Default')) {
-                        sh 'cat lfc-training-testapi-api/deployment.yaml'
-                        sh 'sed -i "s|image: luciferifanum/lfc-training-testapi:[^ ]*|image: luciferifanum/lfc-training-testapi:${IMAGE_TAG}|g" lfc-training-testapi-api/deployment.yaml'
-                        sh 'cat lfc-training-testapi-api/deployment.yaml'
-                        sh 'git config user.email "dev@setenova.com"'
-                        sh 'git config user.name "Setenova Dev Team"'
-                        sh 'git remote set-url origin git@github.com:luciferifanum/LFC.Deployments.git'
-                        sh 'git add lfc-training-testapi-api/deployment.yaml'
-                        //sh 'git add .'
-                        sh 'git commit -m "Updated the deployment.yaml | Jenkins Pipeline"'
-                        sh 'git status'
-                        sh 'git remote -v'
-                        sh 'git push origin HEAD:main'
-                    }
-                }
+                // sh 'git config --local credential.helper "!f() { echo username=\\$GIT_AUTH_USR; echo password=\\$GIT_AUTH_PSW; }; f"'
+                // sh 'git push origin HEAD:$TARGET_BRANCH'
             }
         }
         
