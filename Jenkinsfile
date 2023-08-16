@@ -8,6 +8,7 @@ pipeline{
     environment {
         APP_NAME = "lfc-training-testapi"
         RELEASE = "1.0.0"
+        
         DOCKER_USER = "luciferifanum"
         DOCKER_PASS = "DOCKER"
 
@@ -86,7 +87,7 @@ pipeline{
                     sh 'cat lfc-training-testapi-api/deployment.yaml'
                     sh 'sed -i "s|image: luciferifanum/lfc-training-testapi:[^ ]*|image: luciferifanum/lfc-training-testapi:${IMAGE_TAG}|g" lfc-training-testapi-api/deployment.yaml'
                     sh 'cat lfc-training-testapi-api/deployment.yaml'
-                    sh 'git config  user.email "dev@setenova.com'
+                    sh 'git config  user.email "dev@setenova.com"'
                     sh 'git config  user.name "Setenova Dev Team"'
                     sh 'git add lfc-training-testapi-api/deployment.yaml'
                     sh 'git commit -m "Updated the service.yaml | Jenkins Pipeline"'
