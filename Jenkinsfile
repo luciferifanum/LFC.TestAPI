@@ -79,10 +79,32 @@ pipeline{
 
         stage('Checkout ArgoCD K8S Manifest'){
             steps {
-                git branch: 'main', credentialsId: 'Github', url: GIT_REPO_NAME
+                git(
+                    url: GIT_REPO_NAME,
+                    branch: 'main',
+                    changelog: true,
+                    poll: true,
+                    credentialsId: 'Github'
+                )
+                //git branch: 'main', credentialsId: 'Github', url: GIT_REPO_NAME
             }
         }
 
+        stage("Create artifacts or make changes") {
+            steps {
+                sh 'cat lfc-training-testapi-api/deployment.yaml'
+                // sh "touch testfile"
+                // sh "git add testfile"
+                // sh "git commit -m 'Add testfile from Jenkins Pipeline'"
+            }
+        }
+        stage("Push to Git Repository") {
+            steps {
+                withCredentials([gitUsernamePassword(credentialsId: 'Github', gitToolName: 'Default')]) {
+                    sh "git push -u origin main"
+                }
+            }
+        }
         // stage('git push') {
         //     steps {
         //         withCredentials([gitUsernamePassword(credentialsId: 'Github', gitToolName: 'Default')]) {
@@ -117,12 +139,12 @@ pipeline{
         //     }
         // }
 
-        stage("Push") {
-            steps {
-                // sh 'git config --local credential.helper "!f() { echo username=\\$GIT_AUTH_USR; echo password=\\$GIT_AUTH_PSW; }; f"'
-                // sh 'git push origin HEAD:$TARGET_BRANCH'
-            }
-        }
+        // stage("Push") {
+        //     steps {
+        //         sh 'git config --local credential.helper "!f() { echo username=\\$GIT_AUTH_USR; echo password=\\$GIT_AUTH_PSW; }; f"'
+        //         sh 'git push origin HEAD:$TARGET_BRANCH'
+        //     }
+        // }
         
         stage('Cleanup Artifacts') {
             steps {
