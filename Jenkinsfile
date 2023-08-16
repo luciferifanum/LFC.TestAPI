@@ -81,10 +81,23 @@ pipeline{
             }
         }
 
+        // stage('git push') {
+        //     steps {
+        //         withCredentials([gitUsernamePassword(credentialsId: 'Github', gitToolName: 'Default')]) {
+        //             sh '''
+        //              # modify some files
+        //             git add .
+        //             git commit -m "register work"
+        //             git push
+        //             '''
+        //         }
+        //     }
+        // }
+
         stage('Update K8S Manifest & Push to Repo'){
             steps {
                 script  {
-                    //withCredentials(credentialsId: 'Github') {
+                    withCredentials([gitUsernamePassword(credentialsId: 'Github', gitToolName: 'Default')) {
                         sh 'cat lfc-training-testapi-api/deployment.yaml'
                         sh 'sed -i "s|image: luciferifanum/lfc-training-testapi:[^ ]*|image: luciferifanum/lfc-training-testapi:${IMAGE_TAG}|g" lfc-training-testapi-api/deployment.yaml'
                         sh 'cat lfc-training-testapi-api/deployment.yaml'
@@ -93,13 +106,14 @@ pipeline{
                         //sh 'git add lfc-training-testapi-api/deployment.yaml'
                         sh 'git add .'
                         sh 'git commit -m "Updated the deployment.yaml | Jenkins Pipeline"'
-                        sh 'git push https://luciferifanum:Huelva2022!@github.com/luciferifanum/LFC.Deployments.git HEAD:main'
+                        //sh 'git push https://luciferifanum:Huelva2022!@github.com/luciferifanum/LFC.Deployments.git HEAD:main'
                         // sh 'git status'
                         // sh 'git remote -v'
-                        // sh 'git remote set-url origin git@github.com:luciferifanum/LFC.Deployments.git'
+                        sh 'git remote set-url origin git@github.com:luciferifanum/LFC.Deployments.git'
+                        sh 'git push origin HEAD:main'
                         // sh 'ssh-agent bash -c "ssh-add ${SSH_KEY_FILE}; git push origin HEAD:main"'
                         //sh 'git push @github.com/${GIT_USER_NAME}/${GIT_REPO_NAME">https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:main'
-                    //}
+                    }
                 }
             }
         }
