@@ -84,7 +84,7 @@ pipeline{
         stage('Update K8S Manifest & Push to Repo'){
             steps {
                 script  {
-                    withCredentials(credentialsId: 'Github') {
+                    //withCredentials(credentialsId: 'Github') {
                         sh 'cat lfc-training-testapi-api/deployment.yaml'
                         sh 'sed -i "s|image: luciferifanum/lfc-training-testapi:[^ ]*|image: luciferifanum/lfc-training-testapi:${IMAGE_TAG}|g" lfc-training-testapi-api/deployment.yaml'
                         sh 'cat lfc-training-testapi-api/deployment.yaml'
@@ -98,7 +98,7 @@ pipeline{
                         sh 'git remote set-url origin git@github.com:luciferifanum/LFC.Deployments.git'
                         // sh 'ssh-agent bash -c "ssh-add ${SSH_KEY_FILE}; git push origin HEAD:main"'
                         //sh 'git push @github.com/${GIT_USER_NAME}/${GIT_REPO_NAME">https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:main'
-                    }
+                    //}
                 }
             }
         }
