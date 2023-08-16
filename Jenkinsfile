@@ -15,7 +15,7 @@ pipeline{
         RELEASE = "1.0.0"
         DOCKER_USER = "luciferifanum"
         //DOCKER_PASS = 'dckr_pat_J1DpG1h-qE7ks-liuzFqmBggYhE'
-        DOCKER_PASS = credentials("DOCKER")
+        DOCKER_PASS = "DOCKER"
         IMAGE_NAME = "${DOCKER_USER}" + "/" + "${APP_NAME}"
         IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
         SONAR_TOKEN = credentials("jenkins-sonarquebe-token")
@@ -55,7 +55,7 @@ pipeline{
         stage("Build Docker Image") {
             steps {
                 script {
-                    dockerimage = docker.build ("${IMAGE_NAME}")
+                    docker_image = docker.build ("${IMAGE_NAME}")
                 }
             }
         }
@@ -64,12 +64,11 @@ pipeline{
             steps {
                 echo IMAGE_TAG
                 script {
-                    dockerimage.push('latest')
-                    dockerimage.push("${IMAGE_TAG}")
-                    // docker.withRegistry('',DOCKER_PASS) {
+                    docker.withRegistry('',DOCKER_PASS) {
                     
-                    //     docker_image.push('latest')
-                    // }
+                        docker_image.push('latest')
+                        docker_image.push("${IMAGE_TAG}")
+                    }
                 }
             }
         }
