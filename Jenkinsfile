@@ -75,7 +75,7 @@ pipeline{
         }
     
 
-         stage('Checkout ArgoCD K8S Manifest'){
+        stage('Checkout ArgoCD K8S Manifest'){
             steps {
                 git branch: 'main', credentialsId: 'Github', url: GIT_CD_REPO
             }
