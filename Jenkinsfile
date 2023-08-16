@@ -79,12 +79,16 @@ pipeline{
                 git branch: 'main', credentialsId: 'Github', url: GIT_CD_REPO
             }
         }
+
         stage('Update K8S Manifest & Push to Repo'){
             steps {
                 script  {
                     sh 'cat lfc-training-testapi-api/deployment.yaml'
                     sh 'sed -i "s|image: luciferifanum/lfc-training-testapi:[^ ]*|image: luciferifanum/lfc-training-testapi:${IMAGE_TAG}|g" lfc-training-testapi-api/deployment.yaml'
                     sh 'cat lfc-training-testapi-api/deployment.yaml'
+                    sh 'git add lfc-training-testapi-api/deployment.yaml'
+                    sh 'git commit -m "Updated the service.yaml | Jenkins Pipeline"'
+                    sh 'git remote -v'
                 }
             }
         }
