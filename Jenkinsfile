@@ -97,7 +97,7 @@ pipeline{
         stage('Update K8S Manifest & Push to Repo'){
             steps {
                 script  {
-                    withCredentials([gitUsernamePassword(credentialsId: 'Github', gitToolName: 'Default') {
+                    withCredentials([gitUsernamePassword(credentialsId: 'Github', gitToolName: 'Default']) {
                         sh 'cat lfc-training-testapi-api/deployment.yaml'
                         sh 'sed -i "s|image: luciferifanum/lfc-training-testapi:[^ ]*|image: luciferifanum/lfc-training-testapi:${IMAGE_TAG}|g" lfc-training-testapi-api/deployment.yaml'
                         sh 'cat lfc-training-testapi-api/deployment.yaml'
@@ -110,52 +110,10 @@ pipeline{
                         sh 'git remote -v'
                         sh 'git remote set-url origin git@github.com:luciferifanum/LFC.Deployments.git'
                         sh 'git push origin HEAD:main'
-                       
                     }
                 }
             }
         }
-        
-        // stage ('Updating the Deployment File') {
-        //     steps {
-        //         withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]){
-        //             sh '''
-                    
-        //                 git pull https://github.com/****************/CI-CD-PIPELINE.git
-        //                 git config  user.email "****************.com"
-        //                 git config  user.name "****************"
-        //                 BUILD_NUMBER=${BUILD_NUMBER}
-        //                 sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" ArgoCD/deployments.yml
-        //                 git add ArgoCD/deployments.yml
-        //                 git commit -m "updated the image ${BUILD_NUMBER}"
-        //                 git push @github.com/${GIT_USER_NAME}/${GIT_REPO_NAME">@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME">@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME">https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:main
-        //             '''
-        //         }
-        //     }
-        // }
-
-        // stage('Update K8S Manifest & Push to Repo'){
-        //     steps {
-        //         script {
-        //             withCredentials([sshUserPrivateKey(credentialsId: '07b60c02-3cf2-4632-a791-32c9eb56aa38', keyFileVariable: 'SSH_KEY_FILE', passphraseVariable: 'SSH_PASSPHRASE', usernameVariable: 'SSH_USERNAME')]) {
-        //                 sh '''
-        //                 cat lfc-training-testapi-api/service.yaml
-        //                 sed -i "s|image: docker.io/iamprabin/cicd:[^ ]*|image: docker.io/iamprabin/cicd:${BUILD_NUMBER}|g" micro-app/microservice.yaml
-        //                 cat lfc-training-testapi-api/service.yaml
-        //                 git add lfc-training-testapi-api/service.yaml
-        //                 git commit -m 'Updated the service.yaml | Jenkins Pipeline'
-        //                 git remote -v
-     
-        //                 # Set the remote URL to use SSH
-        //                 git remote set-url origin git@github.com:prabinav/argocd-my-app.git
-        
-        //                 # Use ssh-agent to add the SSH key and push the changes
-        //                 ssh-agent bash -c 'ssh-add ${SSH_KEY_FILE}; git push origin HEAD:main'
-        //                 '''
-        //             }
-        //         }
-        //     }    
-        // }
         
         stage('Cleanup Artifacts') {
             steps {
