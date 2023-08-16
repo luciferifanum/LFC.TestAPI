@@ -60,6 +60,18 @@ pipeline{
             }
         }
 
+        stage("Push Docker Image") {
+            steps {
+                echo IMAGE_TAG
+                script {
+                    docker.withRegistry('',DOCKER_PASS) {
+                        //docker_image.push("${IMAGE_TAG}")
+                        docker_image.push('latest')
+                    }
+                }
+            }
+        }
+
         // stage("Sonarqube Analysis") {
         //     steps {
         //         script {
