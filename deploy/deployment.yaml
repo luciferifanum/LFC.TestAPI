@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: lfc-training-test-api
+  name: lfc-training-testapi-api
   namespace: default
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: lfc-training-test-api
+      app: lfc-training-testapi-api
   template:
     metadata:
       labels:
-        app: lfc-training-test-api
+        app: lfc-training-testapi-api
     spec:
       containers:
-      - name: lfc-training-test-api
-        image: luciferifanum/lfctrainingtestapi:latest
+      - name: lfc-training-testapi-api
+        image: luciferifanum/lfc-training-testapi:latest
         imagePullPolicy: IfNotPresent
         resources:
           limits:
