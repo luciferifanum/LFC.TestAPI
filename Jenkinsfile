@@ -45,17 +45,25 @@ pipeline{
             }
         }
 
-        stage("Sonarqube Analysis") {
-            steps {
-                script {
-                    withSonarQubeEnv('sonarqube-server') {
-                        sh 'dotnet-sonarscanner begin /k:"Test" /d:sonar.host.url="http://10.10.10.7:9000" /d:sonar.login="${SONAR_TOKEN}"'
-                        sh 'dotnet build'
-                        sh 'dotnet-sonarscanner end'
-                    }
-                }
-            }
-        }
+        // stage("Sonarqube Analysis") {
+        //     steps {
+        //         script {
+        //             withSonarQubeEnv('sonarqube-server') {
+        //                 sh 'dotnet-sonarscanner begin /k:"Test" /d:sonar.host.url="http://10.10.10.7:9000" /d:sonar.login="${SONAR_TOKEN}"'
+        //                 sh 'dotnet build'
+        //                 sh 'dotnet-sonarscanner end'
+        //             }
+        //         }
+        //     }
+        // }
+
+        // stage("Quality Gate") {
+        //     steps {
+        //         script {
+        //             waitForQualityGate abortPipeline: false, credentialsId: 'jenkins-sonarqube-token'
+        //         }
+        //     }
+        // }
 
         stage("Build Docker Image") {
             steps {
@@ -94,15 +102,6 @@ pipeline{
             }
         }
 
-        // stage("Quality Gate") {
-        //     steps {
-        //         script {
-        //             waitForQualityGate abortPipeline: false, credentialsId: 'jenkins-sonarqube-token'
-        //         }
-        //     }
-
-        // }
-
         // stage("Trigger CD Pipeline") {
         //     steps {
         //         script {
@@ -126,4 +125,3 @@ pipeline{
     //                 mimeType: 'text/html',to: "dmistry@yourhostdirect.com"
     //       }      
     // }
-}
