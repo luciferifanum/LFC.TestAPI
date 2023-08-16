@@ -100,7 +100,8 @@ pipeline{
         stage('Pepe') {
             steps{
                 git branch: 'main', credentialsId: 'Github', url: GIT_CD_REPO
-                sh 'git push origin main'
+                git.push()
+                //sh 'git push origin main'
                 // withCredentials([gitUsernamePassword(credentialsId: 'ssbostan-github-token']) {
                 //     sh "git push -u origin main"
                 // }
