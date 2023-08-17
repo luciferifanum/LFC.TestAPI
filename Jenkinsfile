@@ -49,11 +49,13 @@ pipeline{
         }
 
         stage('SonarQube analysis') {
-            withSonarQubeEnv('sonarqube'){
-                def scannerHome = tool 'sonarqube-msbuild';
-                sh '${scannerHome}/SonarScanner.MSBuild.dll begin /k:"Test"/d:sonar.host.url="http://10.10.10.7:9000" /d:sonar.login="${SONAR_TOKEN}"'
-                sh 'MSBuild.dll /t:Rebuild'
-                sh '${scannerHome}/SonarScanner.MSBuild.dll end'
+            steps {
+                withSonarQubeEnv('sonarqube-server'){
+                    def scannerHome = tool 'sonarqube-msbuild';
+                    sh '${scannerHome}/SonarScanner.MSBuild.dll begin /k:"Test"/d:sonar.host.url="http://10.10.10.7:9000" /d:sonar.login="${SONAR_TOKEN}"'
+                    sh 'MSBuild.dll /t:Rebuild'
+                    sh '${scannerHome}/SonarScanner.MSBuild.dll end'
+                }
             }
         }
     
