@@ -5,10 +5,7 @@ pipeline{
 
     agent any
 
-    tools {
-        dotnetsdk 'dotnet-sdk-7.0'
-    }
-    
+
     environment {
         APP_NAME = "lfc-training-testapi"
         RELEASE = "1.0.0"
