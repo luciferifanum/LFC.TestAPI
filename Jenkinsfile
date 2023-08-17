@@ -49,6 +49,26 @@ pipeline{
             }
         }
 
+        // stage("Sonarqube Analysis") {
+        //     steps {
+        //         script {
+        //             withSonarQubeEnv('sonarqube-server') {
+        //                 sh 'dotnet-sonarscanner begin /k:"Test" /d:sonar.host.url="http://10.10.10.7:9000" /d:sonar.login="${SONAR_TOKEN}"'
+        //                 sh 'dotnet build'
+        //                 sh 'dotnet-sonarscanner end'
+        //             }
+        //         }
+        //     }
+        // }
+
+        // stage("Quality Gate") {
+        //     steps {
+        //         script {
+        //             waitForQualityGate abortPipeline: false, credentialsId: 'jenkins-sonarqube-token'
+        //         }
+        //     }
+        // }
+        
         stage("Build Docker Image") {
             steps {
                 script {
@@ -86,7 +106,6 @@ pipeline{
                     poll: true,
                     credentialsId: 'Github'
                 )
-                //git branch: 'main', credentialsId: 'Github', url: GIT_REPO_NAME
             }
         }
 
@@ -106,53 +125,14 @@ pipeline{
                 sh "git commit -m 'Updated the deployment.yaml | Jenkins Pipeline'"
             }
         }
-        stage("Push to Git Repository") {
+
+        stage("Push ArgoCD K8S Manifest to  to Repo") {
             steps {
                 withCredentials([gitUsernamePassword(credentialsId: 'Github', gitToolName: 'Default')]) {
                     sh "git push -u origin main"
                 }
             }
         }
-        // stage('git push') {
-        //     steps {
-        //         withCredentials([gitUsernamePassword(credentialsId: 'Github', gitToolName: 'Default')]) {
-        //             sh '''
-        //              # modify some files
-        //             git add .
-        //             git commit -m "register work"
-        //             git push
-        //             '''
-        //         }
-        //     }
-        // }
-
-        // stage('Update K8S Manifest & Push to Repo'){
-        //     steps {
-        //         script  {
-        //             withCredentials(gitUsernamePassword(credentialsId: 'Github', gitToolName: 'Default')) {
-        //                 sh 'cat lfc-training-testapi-api/deployment.yaml'
-        //                 sh 'sed -i "s|image: luciferifanum/lfc-training-testapi:[^ ]*|image: luciferifanum/lfc-training-testapi:${IMAGE_TAG}|g" lfc-training-testapi-api/deployment.yaml'
-        //                 sh 'cat lfc-training-testapi-api/deployment.yaml'
-        //                 sh 'git config user.email "dev@setenova.com"'
-        //                 sh 'git config user.name "Setenova Dev Team"'
-        //                 sh 'git remote set-url origin git@github.com:luciferifanum/LFC.Deployments.git'
-        //                 sh 'git add lfc-training-testapi-api/deployment.yaml'
-        //                 //sh 'git add .'
-        //                 sh 'git commit -m "Updated the deployment.yaml | Jenkins Pipeline"'
-        //                 sh 'git status'
-        //                 sh 'git remote -v'
-        //                 sh 'git push origin HEAD:main'
-        //             }
-        //         }
-        //     }
-        // }
-
-        // stage("Push") {
-        //     steps {
-        //         sh 'git config --local credential.helper "!f() { echo username=\\$GIT_AUTH_USR; echo password=\\$GIT_AUTH_PSW; }; f"'
-        //         sh 'git push origin HEAD:$TARGET_BRANCH'
-        //     }
-        // }
         
         stage('Cleanup Artifacts') {
             steps {
@@ -162,25 +142,5 @@ pipeline{
                 }
             }
         }
-
-        // stage("Sonarqube Analysis") {
-        //     steps {
-        //         script {
-        //             withSonarQubeEnv('sonarqube-server') {
-        //                 sh 'dotnet-sonarscanner begin /k:"Test" /d:sonar.host.url="http://10.10.10.7:9000" /d:sonar.login="${SONAR_TOKEN}"'
-        //                 sh 'dotnet build'
-        //                 sh 'dotnet-sonarscanner end'
-        //             }
-        //         }
-        //     }
-        // }
-
-        // stage("Quality Gate") {
-        //     steps {
-        //         script {
-        //             waitForQualityGate abortPipeline: false, credentialsId: 'jenkins-sonarqube-token'
-        //         }
-        //     }
-        // }
     }
 }
