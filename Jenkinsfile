@@ -44,7 +44,6 @@ pipeline{
         stage('Build Application') {
             steps {
                 sh 'dotnet restore'
-                // sh 'dotnet tool restore --configfile "src/LFC.Training.TestAPI/.config/dotnet-tool.json"'
                 sh 'dotnet publish -c Release -o out -r linux-x64 --self-contained'
             }
         }
@@ -61,13 +60,13 @@ pipeline{
         //     }
         // }
 
-        // stage("Quality Gate") {
-        //     steps {
-        //         script {
-        //             waitForQualityGate abortPipeline: false, credentialsId: 'jenkins-sonarqube-token'
-        //         }
-        //     }
-        // }
+        stage("Quality Gate") {
+            steps {
+                script {
+                    waitForQualityGate abortPipeline: false, credentialsId: 'jenkins-sonarqube-token'
+                }
+            }
+        }
 
         stage("Build Docker Image") {
             steps {
