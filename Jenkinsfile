@@ -52,6 +52,7 @@ pipeline{
             steps {
                 script {
                     withSonarQubeEnv('sonarqube-server') {
+                        sh 'dotnet tool install --global dotnet-sonarscanner'
                         sh 'dotnet-sonarscanner begin /k:"Test" /d:sonar.host.url="http://10.10.10.7:9000" /d:sonar.login="${SONAR_TOKEN}"'
                         sh 'dotnet build'
                         sh 'dotnet-sonarscanner end'
