@@ -49,10 +49,8 @@ pipeline{
         }
 
         stage("Sonarqube Analysis") {
-            steps {
-                def scannerHome = tool 'SonarScanner for MS Build'
-                //script {
-                    withSonarQubeEnv() {
+            def scannerHome = tool 'SonarScanner for MS Build'
+            withSonarQubeEnv() {
                         env.PATH = "$PATH:/home/jenkins/.dotnet"
                         env.PATH = "$PATH:/home/jenkins/.dotnet/tools"
                         sh 'dotnet ${scannerHome}/SonarScanner.MSBuild.dll begin /k:"Test"/d:sonar.host.url="http://10.10.10.7:9000" /d:sonar.login="${SONAR_TOKEN}"'
@@ -61,9 +59,22 @@ pipeline{
                         //sh 'dotnet-sonarscanner begin /k:"Test" /d:sonar.host.url="http://10.10.10.7:9000" /d:sonar.login="${SONAR_TOKEN}"'
                         //sh 'dotnet build'
                         //sh 'dotnet-sonarscanner end'
-                    }
-                //}
             }
+
+//            steps {
+                //script {
+                    // withSonarQubeEnv() {
+                    //     env.PATH = "$PATH:/home/jenkins/.dotnet"
+                    //     env.PATH = "$PATH:/home/jenkins/.dotnet/tools"
+                    //     sh 'dotnet ${scannerHome}/SonarScanner.MSBuild.dll begin /k:"Test"/d:sonar.host.url="http://10.10.10.7:9000" /d:sonar.login="${SONAR_TOKEN}"'
+                    //     sh 'dotnet build'
+                    //     sh 'dotnet ${scannerHome}/SonarScanner.MSBuild.dll end' 
+                    //     //sh 'dotnet-sonarscanner begin /k:"Test" /d:sonar.host.url="http://10.10.10.7:9000" /d:sonar.login="${SONAR_TOKEN}"'
+                    //     //sh 'dotnet build'
+                    //     //sh 'dotnet-sonarscanner end'
+                    // }
+                //}
+  //          }
         }
 
         stage("Quality Gate") {
