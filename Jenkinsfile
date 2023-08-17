@@ -52,9 +52,10 @@ pipeline{
             steps {
                 withSonarQubeEnv('sonarqube-server'){
                     echo("$PATH:/home/jenkins/.dotnet")
-                    sh '${scannerHome}/SonarScanner.MSBuild.dll begin /k:"Test"/d:sonar.host.url="http://10.10.10.7:9000" /d:sonar.login="${SONAR_TOKEN}"'
-                    sh 'MSBuild.dll /t:Rebuild'
-                    sh '${scannerHome}/SonarScanner.MSBuild.dll end'
+                    echo("$PATH:/home/jenkins/.dotnet/tools")
+                    sh '${$PATH:/home/jenkins/.dotnet/tools}/SonarScanner.MSBuild.dll begin /k:"Test"/d:sonar.host.url="http://10.10.10.7:9000" /d:sonar.login="${SONAR_TOKEN}"'
+                    sh 'dotnet build'
+                    sh '${$PATH:/home/jenkins/.dotnet/tools}/SonarScanner.MSBuild.dll end'
                 }
             }
         }
