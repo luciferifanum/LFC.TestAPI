@@ -51,7 +51,7 @@ pipeline{
         stage('SonarQube analysis') {
             steps {
                 withSonarQubeEnv('sonarqube-server'){
-                    env.PATH = "$PATH:/home/jenkins/.dotnet"
+                    echo("$PATH:/home/jenkins/.dotnet")
                     sh '${scannerHome}/SonarScanner.MSBuild.dll begin /k:"Test"/d:sonar.host.url="http://10.10.10.7:9000" /d:sonar.login="${SONAR_TOKEN}"'
                     sh 'MSBuild.dll /t:Rebuild'
                     sh '${scannerHome}/SonarScanner.MSBuild.dll end'
@@ -141,7 +141,6 @@ pipeline{
 
         stage("Update ArgoCD K8S Manifest & Push to Repo") {
             steps {
-
                 sh 'cat lfc-training-testapi-api/deployment.yaml'
                 sh 'sed -i "s|image: luciferifanum/lfc-training-testapi:[^ ]*|image: luciferifanum/lfc-training-testapi:${IMAGE_TAG}|g" lfc-training-testapi-api/deployment.yaml'
                 sh 'cat lfc-training-testapi-api/deployment.yaml'
