@@ -5,6 +5,10 @@ pipeline{
 
     agent any
 
+    tools {
+        dotnetsdk 'dotnet-sdk-7.0'
+    }
+    
     environment {
         APP_NAME = "lfc-training-testapi"
         RELEASE = "1.0.0"
@@ -49,9 +53,6 @@ pipeline{
         }
 
         stage('SonarQube analysis') {
-            tools {
-                dotnetsdk 'dotnet-sdk-7.0'
-            }
             steps {
                 script {
                     withSonarQubeEnv('sonarqube-server'){
