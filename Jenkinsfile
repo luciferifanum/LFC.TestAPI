@@ -53,11 +53,9 @@ pipeline{
             steps {
                 script {
                     withSonarQubeEnv('sonarqube-server'){
-                        echo("$PATH:/home/jenkins/.dotnet")
-                        echo("$PATH:/home/jenkins/.dotnet/tools")
-                        sh 'sudo dotnet-sonarscanner begin /k:"Test"/d:sonar.host.url="http://10.10.10.7:9000" /d:sonar.login="${SONAR_TOKEN}"'
+                        sh 'dotnet-sonarscanner begin /k:"Test"/d:sonar.host.url="http://10.10.10.7:9000" /d:sonar.login="${SONAR_TOKEN}"'
                         sh 'dotnet build'
-                        sh 'sudo dotnet-sonarscanner end'
+                        sh 'dotnet-sonarscanner end'
                     }
                 }
             }
