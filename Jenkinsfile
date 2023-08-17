@@ -49,13 +49,18 @@ pipeline{
         }
 
         stage('SonarQube analysis') {
+            tools {
+                dotnetsdk 'dotnet-sdk-7.0'
+            }
             steps {
-                withSonarQubeEnv('sonarqube-server'){
-                    echo("$PATH:/home/jenkins/.dotnet")
-                    echo("$PATH:/home/jenkins/.dotnet/tools")
-                    sh '${$PATH:/home/jenkins/.dotnet/tools}/SonarScanner.MSBuild.dll begin /k:"Test"/d:sonar.host.url="http://10.10.10.7:9000" /d:sonar.login="${SONAR_TOKEN}"'
-                    sh 'dotnet build'
-                    sh '${$PATH:/home/jenkins/.dotnet/tools}/SonarScanner.MSBuild.dll end'
+                script {
+                    withSonarQubeEnv('sonarqube-server'){
+                        echo("$PATH:/home/jenkins/.dotnet")
+                        echo("$PATH:/home/jenkins/.dotnet/tools")
+                        sh 'sudo dotnet-sonarscanner begin /k:"Test"/d:sonar.host.url="http://10.10.10.7:9000" /d:sonar.login="${SONAR_TOKEN}"'
+                        sh 'dotnet build'
+                        sh 'sudo dotnet-sonarscanner end'
+                    }
                 }
             }
         }
