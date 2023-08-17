@@ -48,21 +48,30 @@ pipeline{
             }
         }
 
-        stage("Sonarqube Analysis") {
-            steps {
-                def scannerHome = tool 'SonarScanner for MS Build'
-                withSonarQubeEnv() {
-                    env.PATH = "$PATH:/home/jenkins/.dotnet"
-                    env.PATH = "$PATH:/home/jenkins/.dotnet/tools"
-                    sh 'dotnet ${scannerHome}/SonarScanner.MSBuild.dll begin /k:"Test"/d:sonar.host.url="http://10.10.10.7:9000" /d:sonar.login="${SONAR_TOKEN}"'
-                    sh 'dotnet build'
-                    sh 'dotnet ${scannerHome}/SonarScanner.MSBuild.dll end' 
-                    //sh 'dotnet-sonarscanner begin /k:"Test" /d:sonar.host.url="http://10.10.10.7:9000" /d:sonar.login="${SONAR_TOKEN}"'
-                    //sh 'dotnet build'
-                    //sh 'dotnet-sonarscanner end'
-                }
+        stage('SonarQube analysis') {
+            withSonarQubeEnv('sonarqube'){
+                def scannerHome = tool 'sonarqube-msbuild';
+                sh '${scannerHome}/SonarScanner.MSBuild.dll begin /k:"Test"/d:sonar.host.url="http://10.10.10.7:9000" /d:sonar.login="${SONAR_TOKEN}"'
+                sh 'MSBuild.dll /t:Rebuild'
+                sh '${scannerHome}/SonarScanner.MSBuild.dll end'
             }
         }
+    
+        // stage("Sonarqube Analysis") {
+        //     steps {
+        //         def scannerHome = tool 'SonarScanner for MS Build'
+        //         withSonarQubeEnv() {
+        //             env.PATH = "$PATH:/home/jenkins/.dotnet"
+        //             env.PATH = "$PATH:/home/jenkins/.dotnet/tools"
+        //             sh 'dotnet ${scannerHome}/SonarScanner.MSBuild.dll begin /k:"Test"/d:sonar.host.url="http://10.10.10.7:9000" /d:sonar.login="${SONAR_TOKEN}"'
+        //             sh 'dotnet build'
+        //             sh 'dotnet ${scannerHome}/SonarScanner.MSBuild.dll end' 
+        //             //sh 'dotnet-sonarscanner begin /k:"Test" /d:sonar.host.url="http://10.10.10.7:9000" /d:sonar.login="${SONAR_TOKEN}"'
+        //             //sh 'dotnet build'
+        //             //sh 'dotnet-sonarscanner end'
+        //         }
+        //     }
+        // }
 
 //            steps {
                 //script {
